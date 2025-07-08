@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Test Locales</string>
+    <string name="test_string">fr-rFR Text</string>
+</resources>
