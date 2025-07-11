@@ -16,6 +16,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+//        resConfigs("en-rUS", "fr-rFR", "zh-rCN")
         resourceConfigurations += listOf("en-rUS", "fr-rFR", "zh-rCN")
     }
 
