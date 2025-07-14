@@ -7,6 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
@@ -20,7 +21,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.os.LocaleListCompat
 import com.example.testlocales.ui.theme.TestLocalesTheme
 import java.util.Locale
 
@@ -37,74 +37,33 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-        print("TEST-APP MainActivity onCreate called with resources.configuration.locales[0]: ${resources.configuration.locales[0]} AND Locale.getDefault(): ${Locale.getDefault()}\n")
-
-        val accessedLocaleList = this.resources.configuration.locales
-        val otherLocaleList = LocaleList.getDefault()
-        val primaryLocale: Locale = this.resources.configuration.locales[0]
-        val locale: String = primaryLocale.displayName
-        for (i in 0 until accessedLocaleList.size()) {
-            val localeName = accessedLocaleList[i].displayName
-            val other = otherLocaleList[i].displayName
-            print("test-app MainActivity accessedLocaleList: $i) $localeName\n")
-            print("test-app MainActivity otherLocaleList: $i) $other\n")
-        }
-        print("test-app MainActivity: onCreate called with primaryLocale: $locale\n")
-
-        val localeConfig = this.resources.assets.locales
-        println("LocaleTest LocaleConfig resources.assets.locales: ${localeConfig.joinToString()}")
-
-        val assetManager = resources.assets
-        val assetManagerLocales = assetManager.locales
-        println("oz-debug: AssetManager.locales returned (${assetManagerLocales.size}): ${assetManagerLocales.joinToString()}")
-        println("oz-debug: Locale.getAvailableLocales() returned (${Locale.getAvailableLocales().size}): ${Locale.getAvailableLocales().joinToString()}")
     }
 }
 
 @Composable
 fun LocaleTestContent(modifier: Modifier = Modifier) {
     val context = LocalContext.current
-    val systemLocales = LocaleListCompat.getDefault()
     val configLocales = context.resources.configuration.locales
     val localeList = LocaleList.getDefault()
 
     Column(
         modifier = modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
+    )
         Text(
             text = "Locale Resolution Test",
             fontSize = 24.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Blue
         )
-
         Text(
-            text = "Current Locale (Locale.getDefault()): ${Locale.getDefault()}",
-            fontSize = 16.sp
+            text = "In the build.gradle: \n" +
+                "resourceConfigurations += listOf(\"en-rUS\", \"fr-rFR\", \"zh-rCN\")",
+            fontSize = 12.sp,
         )
 
         Text(
-            text = "System Wide - LocaleListCompat.getDefault():",
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Medium
-        )
-
-        Column(
-            modifier = Modifier.padding(start = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            for (i in 0 until systemLocales.size()) {
-                val locale = systemLocales.get(i)
-                Text(
-                    text = "${i + 1}. ${locale?.toString() ?: "Unknown"} (${locale?.displayName ?: "Unknown"})",
-                    fontSize = 14.sp
-                )
-            }
-        }
-
-        Text(
-            text = "LocaleList.getDefault():",
+            text = "Device Settings - LocaleList.getDefault():",
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
         )
@@ -122,10 +81,18 @@ fun LocaleTestContent(modifier: Modifier = Modifier) {
             }
         }
 
+        Spacer(modifier = Modifier.padding(vertical = 8.dp))
         Text(
-            text = "App specific locale - Resources.getConfiguration().getLocales():",
+            text = "Application Context —\nthis.resources.getConfiguration().getLocales()",
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
+        )
+
+        Text(
+            text = ".locales(0) is the authoritative source for what language the user " +
+                "is currently seeing in your UI",
+            fontSize = 12.sp,
+            color = Color.Gray
         )
 
         Column(
@@ -137,19 +104,28 @@ fun LocaleTestContent(modifier: Modifier = Modifier) {
                 Text(
                     text = "${i + 1}. ${locale?.toString() ?: "Unknown"} (${locale?.displayName ?: "Unknown"})",
                     fontSize = 14.sp,
-                    color = Color.Blue
+                    color = if (i == 0) Color.Blue else Color.Black,
+                    fontWeight = if (i == 0) FontWeight.SemiBold else FontWeight.Normal
                 )
             }
         }
+
+        Spacer(modifier = Modifier.padding(vertical = 8.dp))
         Text(
-            text = "Test String:",
+            text = "Locale.getDefault(): ${Locale.getDefault()}",
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium,
+        )
+
+        Text(
+            text = "R.string.test_string: ",
             fontSize = 16.sp,
             fontWeight = FontWeight.Medium
         )
 
         Text(
             text = stringResource(R.string.test_string),
-            fontSize = 20.sp,
+            fontSize = 18.sp,
             fontWeight = FontWeight.Bold,
             color = Color.Red
         )

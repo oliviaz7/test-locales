@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">Test Locales</string>
-    <string name="test_string">English Text</string>
+    <string name="test_string">English Text (default)</string>
 </resources>

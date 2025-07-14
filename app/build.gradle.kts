@@ -20,6 +20,10 @@ android {
         resourceConfigurations += listOf("en-rUS", "fr-rFR", "zh-rCN")
     }
 
+    androidResources {
+        generateLocaleConfig = true
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
