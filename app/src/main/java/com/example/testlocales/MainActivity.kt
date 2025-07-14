@@ -49,7 +49,7 @@ fun LocaleTestContent(modifier: Modifier = Modifier) {
     Column(
         modifier = modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
-    )
+    ) {
         Text(
             text = "Locale Resolution Test",
             fontSize = 24.sp,
